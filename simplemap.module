@@ -1,0 +1,97 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function simplemap_menu() {
+  return [
+    'admin/settings/simplemap' => [
+      'title'             => 'Simplemap',
+      'description'       => t('Configure the Sitemap Generation'),
+      'page callback'     => 'system_admin_menu_block_page',
+      'file'              => 'system.admin.inc',
+      'file path'         => drupal_get_path('module', 'system'),
+      'access arguments'  => ['manage simplemap settings'],
+    ],
+    'admin/settings/simplemap/inclusions' => [
+      'title'             => 'Simplemap Inclusions',
+      'description'       => t('Configure the Elements Included in the Sitemap'),
+      'page callback'     => 'drupal_get_form',
+      'page arguments'    => ['simplemap_inclusions_form'],
+      'file'              => 'admin/inclusions_form.inc',
+      'access arguments'  => ['manage simplemap settings'],
+    ],
+    'admin/settings/simplemap/exclusions' => [
+      'title'             => 'Simplemap Exclusions',
+      'description'       => t('Configure the Nodes Excluded from the Sitemap'),
+      'page callback'     => 'drupal_get_form',
+      'page arguments'    => ['simplemap_exclusions_form'],
+      'file'              => 'admin/exclusions_form.inc',
+      'access arguments'  => ['manage simplemap settings'],
+    ],
+    'admin/settings/simplemap/inclusions/%/delete' => [
+      'page callback'     => 'delete_sitemap',
+      'page arguments'    => [4],
+      'file'              => 'admin/inclusions_form.inc',
+      'access arguments'  => ['manage simplemap settings'],
+      'type'              => MENU_CALLBACK,
+    ],
+    'admin/settings/simplemap/exclusions/%/delete' => [
+      'page callback'     => 'delete_from_exclusion',
+      'page arguments'    => [4],
+      'file'              => 'admin/exclusions_form.inc',
+      'access arguments'  => ['manage simplemap settings'],
+      'type'              => MENU_CALLBACK,
+    ],
+    'sitemap.xml' => [
+      'page callback'     => 'simplemap_output_xml',
+      'access callback'   => true,
+      'file'              => 'simplemap.pages.inc',
+      'type'              => MENU_CALLBACK,
+    ],
+  ];
+}
+
+/**
+ * Implements hook_permission().
+ */
+function simplemap_permission() {
+  return [
+    'manage simplemap settings' => [
+      'title'       => t('Manage Simplemap Settings'),
+      'description' => t('Configure the Sitemap Generation Settings'),
+    ],
+  ];
+}
+
+/**
+ * Implements hook_cron().
+ */
+function simplemap_cron() {
+  watchdog('simplemap', 'Simplemap has been launched by Cron');
+  simplemap_launch_generation();
+}
+
+/**
+ * Makes Simplemap to start generating sitemaps.
+ */
+function simplemap_launch_generation() {
+  // Recollect classnames of custom generators.
+  $generator_list = module_invoke_all('register_simplemap_generator');
+  // Manually load the required class to avoid polluting the bootstrap process
+  // with unused classes.
+  watchdog('simplemap', 'Simplemap sitemap generation started.');
+  $generator = new SimplemapGeneratorController($generator_list);
+  $generator->generate();
+  watchdog('simplemap', 'Simplemap sitemap generation finished.');
+}
+
+
+/**
+ * Returns the base path of the simplemap folder where the sitemap files are
+ * stored.
+ */
+function simplemap_get_basepath() {
+  $wrapper = file_stream_wrapper_get_instance_by_uri('public://');
+  return "{$wrapper->realpath()}/simplemap";
+}

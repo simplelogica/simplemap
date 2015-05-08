@@ -1,0 +1,60 @@
+<?php
+
+
+/**
+ * Implements hook_install().
+ */
+function simplemap_install() {
+  variable_set('simplemap_generate_images', true);
+  variable_set('simplemap_generate_videos', true);
+}
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function simplemap_uninstall() {
+  variable_del('simplemap_generate_images');
+  variable_del('simplemap_generate_videos');
+}
+
+
+/**
+ * Implements hook_schema().
+ */
+function simplemap_schema() {
+  return [
+    'simplemap_content_types' => [
+      'fields' => [
+        'sitemap_name'      => [
+          'type'      => 'varchar',
+          'length'    => 254,
+          'not null'  => true,
+        ],
+        'content_type'      => [
+          'type'      => 'varchar',
+          'length'    => 32,
+          'not null'  => true,
+        ],
+        'internationalize'  => [
+          'type'      => 'int',
+          'not null'  => true,
+          'default'   => 0,
+        ],
+      ],
+      'primary key' => ['sitemap_name', 'content_type'],
+      'unique keys' => [
+        'simplemap_cts_unique_ct'       => ['content_type'],
+      ],
+    ],
+    'simplemap_exclusions' => [
+      'fields' => [
+        'nid'               => [
+          'type'      => 'int',
+          'not null'  => true,
+        ],
+      ],
+      'primary key' => ['nid'],
+    ],
+  ];
+}
