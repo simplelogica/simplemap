@@ -45,7 +45,7 @@ class SimplemapGeneratorController {
     $sm_loader = new SitemapDefinitionsLoader();
     foreach ($sm_loader->loadDefinitions() as $sm_definition) {
       if ($sm_definition->internationalize) {
-        foreach (language_list() as $lang) {
+        foreach ($this->getEnabledLanguages() as $lang) {
           $generateSitemap($sm_definition, $lang);
         }
       } else {
@@ -89,6 +89,15 @@ class SimplemapGeneratorController {
       reset($objects);
       rmdir($dir);
     }
+  }
+
+  /**
+   * Returns an array containing only the enabled languages.
+   */
+  private function getEnabledLanguages() {
+    return array_filter(language_list(), function ($lang) {
+      return $lang->enabled;
+    });
   }
 
 
