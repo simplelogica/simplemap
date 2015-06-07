@@ -9,14 +9,13 @@ class NodeImagesLoader {
    * @return Array of nodes
    */
   function loadNodesWithImages() {
-    $query = db_select('file_usage', 'u')
-      ->distinct()
-      ->fields('u', ['id'])
-      ->execute();
-    // We can omit the distinct() call since we are using a fetchAllAssoc call
-    // based on the 'id' field.  Results with the same 'id' will override the
-    // existing ones, so we will never get repeated 'id's.
-    $nids = array_keys($query->fetchAllAssoc('id'));
+    $query = db_select('file_usage', 'u');
+    $query->join('node', 'n', 'u.id = n.nid');
+    
+    $query->fields('u', ['id'])
+      ->condition('n.status', NODE_PUBLISHED);
+    $result = $query->execute();
+    $nids = array_keys($result->fetchAllAssoc('id'));
     return node_load_multiple($nids);
   }
 

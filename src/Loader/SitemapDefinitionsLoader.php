@@ -36,6 +36,7 @@ class SitemapDefinitionsLoader {
     $query = db_select('node', 'n');
     $query->join('simplemap_content_types', 's', 'n.type = s.content_type');
     $query->fields('n');
+    $query->condition('n.status', NODE_PUBLISHED);
     $query->condition('s.sitemap_name', $sitemap, '=');
     // Filter nodes by language.  Nodes that are not suposed to be translated
     // must show in all languages.
