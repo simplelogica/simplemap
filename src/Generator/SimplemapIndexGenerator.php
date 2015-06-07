@@ -1,5 +1,5 @@
 <?php
-module_load_include('php', 'simplemap', 'classes/generators/SimplemapGeneratorBase');
+module_load_include('php', 'simplemap', 'src/Generator/SimplemapGeneratorBase');
 
 
 class SimplemapIndexGenerator extends SimplemapGeneratorBase {

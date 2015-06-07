@@ -1,5 +1,5 @@
 <?php
-module_load_include('php', 'simplemap', 'classes/loaders/ExcludedNodesLoader');
+module_load_include('php', 'simplemap', 'src/Loader/ExcludedNodesLoader');
 
 
 class SitemapDefinitionsLoader {

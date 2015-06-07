@@ -1,6 +1,6 @@
 <?php
-module_load_include('php', 'simplemap', 'classes/generators/SimplemapGeneratorBase');
-module_load_include('php', 'simplemap', 'classes/helpers/SitemapDefinitionsLoader');
+module_load_include('php', 'simplemap', 'src/Generator/SimplemapGeneratorBase');
+module_load_include('php', 'simplemap', 'src/Loader/SitemapDefinitionsLoader');
 
 
 class SimplemapCTGenerator extends SimplemapGeneratorBase {
@@ -8,7 +8,7 @@ class SimplemapCTGenerator extends SimplemapGeneratorBase {
   private $language;
   private $sitemap_definition_loader;
   private $filename;
-  
+
   function __construct($path, $filename, $language = null) {
     parent::__construct($path);
     $this->filename = $filename;

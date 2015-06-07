@@ -1,6 +1,6 @@
 <?php
-module_load_include('php', 'simplemap', 'classes/loaders/ContentTypesLoader');
-module_load_include('php', 'simplemap', 'classes/loaders/SitemapDefinitionsLoader');
+module_load_include('php', 'simplemap', 'src/Loader/ContentTypesLoader');
+module_load_include('php', 'simplemap', 'src/Loader/SitemapDefinitionsLoader');
 
 
 function simplemap_inclusions_form($form, &$form_state) {

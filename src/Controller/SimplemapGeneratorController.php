@@ -1,8 +1,8 @@
 <?php
-module_load_include('php', 'simplemap', 'classes/generators/SimplemapCTGenerator');
-module_load_include('php', 'simplemap', 'classes/generators/SimplemapImageGenerator');
-module_load_include('php', 'simplemap', 'classes/generators/SimplemapIndexGenerator');
-module_load_include('php', 'simplemap', 'classes/loaders/SitemapDefinitionsLoader');
+module_load_include('php', 'simplemap', 'src/Generator/SimplemapCTGenerator');
+module_load_include('php', 'simplemap', 'src/Generator/SimplemapImageGenerator');
+module_load_include('php', 'simplemap', 'src/Generator/SimplemapIndexGenerator');
+module_load_include('php', 'simplemap', 'src/Loader/SitemapDefinitionsLoader');
 
 
 class SimplemapGeneratorController {

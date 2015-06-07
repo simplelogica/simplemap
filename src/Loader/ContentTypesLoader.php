@@ -1,5 +1,5 @@
 <?php
-module_load_include('php', 'simplemap', 'classes/helpers/SitemapDefinitionsLoader');
+module_load_include('php', 'simplemap', 'src/Loader/SitemapDefinitionsLoader');
 
 
 class ContentTypesLoader {

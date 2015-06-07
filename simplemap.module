@@ -18,7 +18,7 @@ function simplemap_menu() {
       'description'       => t('Configure the Elements Included in the Sitemap'),
       'page callback'     => 'drupal_get_form',
       'page arguments'    => ['simplemap_inclusions_form'],
-      'file'              => 'admin/inclusions_form.inc',
+      'file'              => 'src/Form/inclusions_form.php',
       'access arguments'  => ['manage simplemap settings'],
     ],
     'admin/settings/simplemap/exclusions' => [
@@ -26,7 +26,7 @@ function simplemap_menu() {
       'description'       => t('Configure the Nodes Excluded from the Sitemap'),
       'page callback'     => 'drupal_get_form',
       'page arguments'    => ['simplemap_exclusions_form'],
-      'file'              => 'admin/exclusions_form.inc',
+      'file'              => 'src/Form/exclusions_form.php',
       'access arguments'  => ['manage simplemap settings'],
     ],
     'admin/settings/simplemap/inclusions/%/delete' => [
@@ -76,10 +76,11 @@ function simplemap_cron() {
  * Makes Simplemap to start generating sitemaps.
  */
 function simplemap_launch_generation() {
-  // Recollect classnames of custom generators.
-  $generator_list = module_invoke_all('register_simplemap_generator');
   // Manually load the required class to avoid polluting the bootstrap process
   // with unused classes.
+  module_load_include('php', 'simplemap', 'src/Controller/SimplemapGeneratorController');
+  // Recollect classnames of custom generators.
+  $generator_list = module_invoke_all('register_simplemap_generator');
   watchdog('simplemap', 'Simplemap sitemap generation started.');
   $generator = new SimplemapGeneratorController($generator_list);
   $generator->generate();

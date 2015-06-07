@@ -1,6 +1,6 @@
 <?php
-module_load_include('php', 'simplemap', 'classes/generators/SimplemapGeneratorBase');
-module_load_include('php', 'simplemap', 'classes/loaders/NodeImagesLoader');
+module_load_include('php', 'simplemap', 'src/Generator/SimplemapGeneratorBase');
+module_load_include('php', 'simplemap', 'src/Loader/NodeImagesLoader');
 
 
 class SimplemapImageGenerator extends SimplemapGeneratorBase {
